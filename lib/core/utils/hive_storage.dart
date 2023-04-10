@@ -40,7 +40,7 @@ class HiveUtils {
     final Map<String, dynamic> decodedJson = jsonDecode(storedMovieString);
 
     final MovieCardModel storedMovie = MovieCardModel.fromJson(decodedJson);
-    print("fetched movie ${storedMovie.title}");
+    //print("fetched movie ${storedMovie.title}");
   }
 
   static storeMovies(List<MovieCardModel> movies) {
@@ -53,22 +53,43 @@ class HiveUtils {
     return movies;
   }
 
-  /// Deletes the movie from the local storage with the provided [id]
+  /// Deletes the movies from the local storage with  the provider [id]
   static void deleteMovie(int id) {
-    //Step:1 fetch local stored movies
+    // Step :1 fetch local stored movies
     final storedMovies = fetchMovies();
 
-    //step:2 convert List<dynamic> to List<MovieCardModel> using List.from
+    //step:2 convert List<dynamic> to List <MovieCardModel>
     final movies = List<MovieCardModel>.from(storedMovies);
 
-    //step:3 remove the movie element from the list with same movie Id
+    //step:3 remove  the movie element From the List with some movie id
     movies.removeWhere((movieElement) => movieElement.id == id);
 
-    /// step:4 store the new movies list after deleting the single movie item
+    /// step:4 update the new movies List after single movie item
     storeMovies(movies);
   }
 
   static void deleteAllMovies() {
     _ourDataBase?.delete('Movies');
+    // _ourDataBase?.clear();
+  }
+
+  void registerUser({required String username, required String password}) {
+    _ourDataBase?.put('username', username);
+    _ourDataBase?.put('password', username);
+  }
+
+
+  static void loginUser() {
+    final String userNme = _ourDataBase?.get('username');
+    print(userNme);
+   // _ourDataBase?.put('password', username);
+  }
+
+  String getUserName() {
+   return _ourDataBase?.get('username');
+  }
+
+  String getPassword() {
+    return _ourDataBase?.get('password');
   }
 }

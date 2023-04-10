@@ -5,9 +5,9 @@ import 'package:flutter_online_course/core/router.gr.dart';
 class AppRouter extends $AppRouter {
   @override
   final List<AutoRoute> routes = [
-    AutoRoute(page: MovieHomeRoute.page, path: '/'),
-    AutoRoute(page: MovieDetailRoute.page, path: '/movieDetailRoute'),
-    AutoRoute(page: MovieSearchRoute.page,path: '/movieSearchRoute'),
-    AutoRoute(page: BookmarkedMovieRoute.page,path: '/bookmarkedMovieRoute'),
+    AutoRoute(page: LoginRoute.page, path: '/'),
+    //AutoRoute(page: MovieDetailRoute.page, path: '/movieDetailRoute'),
+    //AutoRoute(page: MovieSearchRoute.page,path: '/movieSearchRoute'),
+    //AutoRoute(page: BookmarkedMovieRoute.page,path: '/bookmarkedMovieRoute'),
   ];
 }

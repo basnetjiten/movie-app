@@ -9,8 +9,8 @@ import 'package:flutter_online_course/main.dart';
 part 'movie_details_state.dart';
 
 class MovieDetailsCubit extends Cubit<MovieDetailsState> {
-  MovieDetailsCubit() : super(MovieDetailsInitial());
-  final MovieRepository _movieRepository = getIt<MovieRepository>();
+  MovieDetailsCubit() :_movieRepository = getIt<MovieRepository>(), super(MovieDetailsInitial());
+  late final MovieRepository _movieRepository;
 
   void getMovieDetails({required int movieId})async{
 
