@@ -80,15 +80,18 @@ class HiveUtils {
     return true;
   }
 
+  Map<String, dynamic> getUser() {
+    return _ourDataBase?.get('registration');
+  }
 
   static void loginUser() {
     final String userNme = _ourDataBase?.get('username');
     print(userNme);
-   // _ourDataBase?.put('password', username);
+    // _ourDataBase?.put('password', username);
   }
 
   String getUserName() {
-   return _ourDataBase?.get('username');
+    return _ourDataBase?.get('username');
   }
 
   String getPassword() {

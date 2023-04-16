@@ -4,16 +4,18 @@ import 'package:flutter_online_course/feature/auth/data/models/registration_mode
 class RegisterSource {
   RegisterSource(this._hiveUtils);
 
-  HiveUtils _hiveUtils;
+  final HiveUtils _hiveUtils;
 
   bool registerUser({required RegistrationModel registrationModel}) {
     return _hiveUtils.registerUser(registrationModel: registrationModel);
   }
 
   bool checkCredential({required String username, required String password}) {
-    final String hiveUsername = _hiveUtils.getUserName();
-    final String hivePassword = _hiveUtils.getPassword();
-    print("username and password ${hiveUsername} $hivePassword");
+    final Map<String, dynamic> registeredUser = _hiveUtils.getUser();
+    final String? hivePassword =
+        RegistrationModel.fromJson(registeredUser).password;
+    final String? hiveUsername =
+        RegistrationModel.fromJson(registeredUser).username;
 
     if (username == hiveUsername && hivePassword == password) {
       return true;
