@@ -28,7 +28,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrange,
         title: TextFormField(
           controller: _textEditingController,
           autocorrect: false,
@@ -38,6 +38,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
           },
         ),
       ),
+
       body: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +65,10 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                             return Column(
                               children: [
                                 Text(singleMovie.title),
-                                Text(singleMovie.originalLanguage),
+
+                                Text(singleMovie.originalLanguage,
+                                style:
+                                TextStyle(color: Colors.white)),
                                 Text(singleMovie.overview),
                               ],
                             );
@@ -73,11 +77,13 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                   );
                 } else if (state is SearchedError) {
                   return Center(
-                    child: Text(state.errorMessage),
+                    child: Text(state.errorMessage,
+                      style: TextStyle(color: Colors.white)),
                   );
                 }
                 return const Center(
-                  child: Text('You have not searched any movies yet'),
+                  child: Text('You have not searched any movies yet',
+                    style: TextStyle(color: Colors.white))
                 );
               })
         ],

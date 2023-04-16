@@ -4,39 +4,31 @@ import 'package:flutter_online_course/core/utils/hive_storage.dart';
 import 'package:flutter_online_course/feature/counter/data/models/movie_card_model.dart';
 import 'package:flutter_online_course/feature/counter/presentation/blocs/movie_cubit/movie_cubit.dart';
 
-class MovieListWidget extends StatefulWidget {
-  const MovieListWidget(
+class MovieListWidget extends StatelessWidget {
+  MovieListWidget(
       {super.key, required this.movieFetched, required this.onClick});
 
+  final data = _fetchStoredMovies();
   final Function(int id) onClick;
   final MovieFetched movieFetched;
 
-  @override
-  State<MovieListWidget> createState() => _MovieListWidgetState();
-}
-
-class _MovieListWidgetState extends State<MovieListWidget> {
   final Set<MovieCardModel> movieCollection = {};
-
   List<MovieCardModel> _storedList = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _storedList = _fetchStoredMovies();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
-        itemCount: widget.movieFetched.moviesCard.length,
+        itemCount: movieFetched.moviesCard.length,
         itemBuilder: (context, index) {
-          final movie = widget.movieFetched.moviesCard[index];
+          final movie = movieFetched.moviesCard[index];
+
+
 
           return GestureDetector(
-            onTap: () => widget.onClick(movie.id),
+            onTap: () => onClick(movie.id),
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -62,7 +54,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20),
                         ),
-                        color: Colors.black87,
+                        color: Colors.deepPurpleAccent,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -102,38 +94,30 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       onPressed: () {
-                        /// STEP:1 add single movie in the set
+                        ///problem:1
+                        ///
+                        /// Step:1 add single movie in the set
                         movieCollection.add(movie);
 
-                        /// STEP:2 fetch all the movies from the local storage
+                        ///Step:2 fetch all the movies from the local storage
                         _storedList = _fetchStoredMovies();
 
-                        /// STEP:3 store all the locally stored list in the set
+                        ///step:3 store all the locally stored list in the set
                         movieCollection.addAll(_storedList);
 
-                        ///STEP:4 convert  [movieCollection] set to List and store in the local storage
+                        ///step:4 convert [movie collection] set to list and store in local storage
                         HiveUtils.storeMovies(movieCollection.toList());
-
-                        // ///solution: 1
-                        // _fetchStoredMovies();
-                        //
-                        // movieCollection.addAll(_storedList);
-                        //
-                        // final filteredMovie = movieCollection
-                        //     .toList()
-                        //     .any((element) => element.id == movie.id);
-                        //
-                        // if (!filteredMovie) {
-                        //   movieCollection.add(movie);
-                        //   HiveUtils.storeMovies(
-                        //       movieCollection.toList().reversed.toList());
-                        // }
-                        //
-                        setState(() {
-                          _storedList = _fetchStoredMovies();
-                        });
                       },
-                      icon: _checkBookMarkedMovie(movie),
+                      icon: _storedList
+                          .any((storedMovie) => storedMovie.id == movie.id)
+                      ?const Icon(
+                        Icons.bookmark_add_sharp,
+                        color: Colors.purple,
+                      )
+                      : const Icon(
+                        Icons.bookmark_border,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 )
@@ -150,21 +134,10 @@ class _MovieListWidgetState extends State<MovieListWidget> {
     );
   }
 
-  Widget _checkBookMarkedMovie(MovieCardModel movie) {
-    if (_storedList.any((storedMovie) => storedMovie.title == movie.title)) {
-      return const Icon(
-        Icons.bookmark_added_sharp,
-        color: Colors.purple,
-      );
-    }
-    return const Icon(
-      Icons.bookmark_border,
-      color: Colors.white,
-    );
-  }
+}
 
-  List<MovieCardModel> _fetchStoredMovies() {
-    final data = HiveUtils.fetchMovies();
-    return List<MovieCardModel>.from(data);
-  }
+List<MovieCardModel>_fetchStoredMovies(){
+  final data = HiveUtils.fetchMovies();
+  return List<MovieCardModel>.from(data);
+
 }

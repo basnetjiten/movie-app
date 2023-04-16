@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_online_course/core/router.gr.dart';
 import 'package:flutter_online_course/core/utils/hive_storage.dart';
 import 'package:flutter_online_course/core/utils/shared_pref.dart';
 import 'package:flutter_online_course/feature/counter/presentation/blocs/movie_cubit/movie_cubit.dart';
@@ -66,10 +65,12 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
         if (state is MovieDetailFetched) {
           final movieDetailModel = state.movieDetailsModel;
           // Navigator.of(context, rootNavigator: true).pop();
-          context.router
-              .push(MovieDetailRoute(movieDetailsModel: movieDetailModel));
+          //context.router.push(MovieDetailRoute(movieDetailsModel: movieDetailModel));
         }
       },
+    child: DefaultTabController(
+    length: 3,
+    initialIndex: 0,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(100),
@@ -96,11 +97,11 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
                     IconButton(onPressed:(){
                      // HiveUtils.fetchSingleMovie();
                      // HiveUtils.fetchMovies();
-                      context.router.push(const BookmarkedMovieRoute());
+                     // context.router.push(const BookmarkedMovieRoute());
                     },icon:const Icon(Icons.bookmark_added_rounded,color: Colors.white,)),
                     IconButton(
                       onPressed: () {
-                        context.router.push(const MovieSearchRoute());
+                      //  context.router.push(const MovieSearchRoute());
                       },
                       icon: const Icon(
                         Icons.search,
@@ -126,6 +127,15 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
                               'http://api.themoviedb.org/3/movie/top_rated?api_key=caebc202bd0a26f84f4e0d986beb15cd');
                     }
                   },
+                  indicatorWeight: 0.1,
+                  isScrollable: true,
+                  // indicatorPadding: EdgeInsets.zero,
+                  indicator: const BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(25.0)), // Creates border
+                    color: Colors.red,
+                  ),
                   controller: _tabController,
                   tabs: const [
                     Tab(
@@ -139,6 +149,8 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
                     ),
                   ],
                 ),
+
+
               ],
             ),
           ),
@@ -169,6 +181,7 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
         //     ],
         //   ),
         // ),
+
         body: TabBarView(
           controller: _tabController,
           children: [
@@ -184,6 +197,7 @@ class _MovieHomeScreenState extends State<MovieHomeScreen>
           ],
         ),
       ),
+    ),
     );
   }
 
